@@ -54,7 +54,7 @@ class Config
 		//
 		const retdec::config::Object* getConfigRegister(
 				const llvm::Value* val);
-		retdec::utils::Maybe<unsigned> getConfigRegisterNumber(
+		std::optional<unsigned> getConfigRegisterNumber(
 				const llvm::Value* val);
 		llvm::GlobalVariable* getLlvmRegister(
 				const std::string& name);
@@ -89,7 +89,7 @@ class Config
 				int offset);
 
 		bool isStackVariable(const llvm::Value* val);
-		retdec::utils::Maybe<int> getStackVariableOffset(
+		std::optional<int> getStackVariableOffset(
 				const llvm::Value* val);
 
 		// Insert
