@@ -4,6 +4,8 @@
 * @copyright (c) 2017 Avast Software, licensed under the MIT license
 */
 
+#include <filesystem>
+
 #include <gtest/gtest.h>
 
 #include "retdec/utils/binary_path.h"
@@ -25,8 +27,7 @@ class ThisBinaryPathTests: public Test {};
 
 TEST_F(ThisBinaryPathTests,
 CorrectBinaryPathDetection) {
-	EXPECT_TRUE(getThisBinaryPath().exists());
-	EXPECT_TRUE(getThisBinaryPath().isFile());
+	EXPECT_TRUE(std::filesystem::is_regular_file(getThisBinaryPath()));
 }
 
 //
@@ -35,8 +36,7 @@ CorrectBinaryPathDetection) {
 
 TEST_F(ThisBinaryPathTests,
 CorrectBinaryDirPathDetection) {
-	EXPECT_TRUE(getThisBinaryDirectoryPath().exists());
-	EXPECT_TRUE(getThisBinaryDirectoryPath().isDirectory());
+	EXPECT_TRUE(std::filesystem::is_directory(getThisBinaryDirectoryPath()));
 }
 
 } // namespace tests

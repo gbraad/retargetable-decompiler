@@ -6,6 +6,7 @@
 
 #include "retdec/fileformat/utils/conversions.h"
 #include "fileinfo/file_presentation/getters/simple_getter/visual_basic_json_getter.h"
+#include "retdec/utils/string.h"
 
 using namespace retdec::utils;
 using namespace retdec::fileformat;

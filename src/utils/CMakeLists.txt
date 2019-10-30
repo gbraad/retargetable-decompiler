@@ -6,7 +6,6 @@ set(RETDEC_UTILS_SOURCES
 	conversion.cpp
 	dynamic_buffer.cpp
 	file_io.cpp
-	filesystem_path.cpp
 	math.cpp
 	memory.cpp
 	string.cpp

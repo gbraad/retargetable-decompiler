@@ -4,10 +4,11 @@
  * @copyright (c) 2017 Avast Software, licensed under the MIT license
  */
 
+#include <filesystem>
+
 #include "retdec/utils/conversion.h"
 #include "retdec/utils/binary_path.h"
 #include "retdec/utils/equality.h"
-#include "retdec/utils/filesystem_path.h"
 #include "retdec/utils/string.h"
 #include "retdec/cpdetect/compiler_detector/compiler_detector.h"
 #include "retdec/cpdetect/settings.h"
@@ -192,21 +193,22 @@ CompilerDetector::~CompilerDetector()
  */
 bool CompilerDetector::getExternalDatabases()
 {
-	auto thisDir = FilesystemPath(".");
 	auto result = false;
 
-	// iterating over all files in directory
-	for (const auto *subpath : thisDir)
+	for(auto& f: std::filesystem::directory_iterator
+			(std::filesystem::current_path()))
 	{
-		if (subpath->isFile() && std::any_of(externalSuffixes.begin(), externalSuffixes.end(),
-			[&] (const auto &suffix)
-			{
-				return endsWith(subpath->getPath(), suffix);
-			}
+		if (f.is_regular_file() && std::any_of(
+				externalSuffixes.begin(),
+				externalSuffixes.end(),
+				[&] (const auto &suffix)
+				{
+					return endsWith(f.path(), suffix);
+				}
 		))
 		{
 			result = true;
-			externalDatabase.push_back(subpath->getPath());
+			externalDatabase.push_back(f.path());
 		}
 	}
 
@@ -293,31 +295,44 @@ void CompilerDetector::removeUnusedCompilers()
 
 /**
  * Add all YARA files from the given @p dir to internal paths member.
+ *
+ * If @p file is a directory, add all YARA files from it to internal paths
+ * member. Do it recursively if @p recursive is @c true.
+ * If @p file is a regular file YARA file, add it to internal paths member.
  */
 void CompilerDetector::populateInternalPaths(
-		const retdec::utils::FilesystemPath& dir,
+		const std::filesystem::path& file,
 		bool recursive)
 {
-	if (!dir.isDirectory())
+	if (std::filesystem::is_directory(file))
 	{
-		return;
-	}
-
-	for (const auto *subpath : dir)
-	{
-		if (subpath->isFile()
-				&& std::any_of(externalSuffixes.begin(), externalSuffixes.end(),
-				[&] (const auto &suffix)
+		if (recursive)
+		{
+			for (auto& f : std::filesystem::recursive_directory_iterator(file))
 			{
-				return endsWith(subpath->getPath(), suffix);
+				populateInternalPaths(f, recursive);
 			}
+		}
+		else
+		{
+			for (auto& f : std::filesystem::directory_iterator(file))
+			{
+				populateInternalPaths(f, recursive);
+			}
+		}
+	}
+	else if (std::filesystem::is_regular_file(file))
+	{
+		if (std::any_of(
+					externalSuffixes.begin(),
+					externalSuffixes.end(),
+					[&] (const auto &suffix)
+					{
+						return endsWith(file, suffix);
+					}
 		))
 		{
-			internalPaths.push_back(subpath->getPath());
-		}
-		else if (recursive && subpath->isDirectory())
-		{
-			populateInternalPaths(*subpath);
+			internalPaths.push_back(file);
 		}
 	}
 }

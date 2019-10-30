@@ -5,13 +5,13 @@
  */
 
 #include <iostream>
+#include <filesystem>
 #include <limits>
 #include <vector>
 
 #include <rapidjson/document.h>
 #include <rapidjson/prettywriter.h>
 
-#include "retdec/utils/filesystem_path.h"
 #include "retdec/ar-extractor/archive_wrapper.h"
 #include "retdec/ar-extractor/detection.h"
 
@@ -275,7 +275,7 @@ int processArguments(
 			}
 		}
 		else {
-			if (FilesystemPath(arg).isFile()) {
+			if (std::filesystem::is_regular_file(arg)) {
 				if (inputArchive.empty()) {
 					inputArchive = arg;
 				}

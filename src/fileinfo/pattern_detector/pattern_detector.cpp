@@ -7,7 +7,6 @@
 #include <regex>
 
 #include "retdec/utils/conversion.h"
-#include "retdec/utils/filesystem_path.h"
 #include "retdec/utils/string.h"
 #include "fileinfo/pattern_detector/pattern_detector.h"
 #include "yaracpp/yara_detector/yara_detector.h"
@@ -318,19 +317,23 @@ void PatternDetector::addFilePaths(const std::string &category, const std::set<s
 
 	for(const auto &item : paths)
 	{
-		FilesystemPath actDir(item);
-		if(actDir.isFile())
+		std::filesystem::path actDir(item);
+		if(std::filesystem::is_regular_file(actDir))
 		{
 			actCategory->second.insert(item);
 			continue;
 		}
-
-		for(const auto &file : actDir)
+		else if (std::filesystem::is_directory(actDir))
 		{
-			const auto path = file->getPath();
-			if(file->isFile() && (endsWith(path, ".yar") || endsWith(path, ".yara")))
+			for(auto& file: std::filesystem::directory_iterator(actDir))
 			{
-				actCategory->second.insert(path);
+				if(file.is_regular_file()
+						&& (file.path().extension() == ".yar"
+						|| file.path().extension() == ".yara"
+						|| file.path().extension() == ".yarac"))
+				{
+					actCategory->second.insert(file.path());
+				}
 			}
 		}
 	}

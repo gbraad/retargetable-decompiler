@@ -7,13 +7,14 @@
 #ifndef RETDEC_BIN2LLVMIR_PROVIDERS_CONFIG_H
 #define RETDEC_BIN2LLVMIR_PROVIDERS_CONFIG_H
 
+#include <filesystem>
+
 #include "retdec/config/config.h"
 
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/Module.h>
 
 #include "retdec/utils/address.h"
-#include "retdec/utils/filesystem_path.h"
 
 namespace retdec {
 namespace bin2llvmir {
@@ -174,7 +175,7 @@ class Config
 		// Other
 		//
 		llvm::GlobalVariable* getGlobalDummy();
-		utils::FilesystemPath getOutputDirectory();
+		std::filesystem::path getOutputDirectory();
 		bool getCryptoPattern(
 				retdec::utils::Address addr,
 				std::string& name,

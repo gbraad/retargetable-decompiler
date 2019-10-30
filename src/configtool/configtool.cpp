@@ -6,13 +6,13 @@
 
 #include <cstring>
 #include <fstream>
+#include <filesystem>
 #include <iostream>
 #include <set>
 #include <string>
 
 #include "retdec/config/config.h"
 #include "retdec/utils/conversion.h"
-#include "retdec/utils/filesystem_path.h"
 #include "retdec/utils/string.h"
 
 enum errcode_t
@@ -76,27 +76,20 @@ void printHelp()
 	std::cout << std::endl;
 }
 
-void getDirFiles(const std::string &dirPath, std::vector<std::string> &ret, const std::set<std::string> &suffixes)
+void getDirFiles(
+		const std::string &dirPath,
+		std::vector<std::string> &ret,
+		const std::set<std::string> &suffixes)
 {
-	retdec::utils::FilesystemPath fsp(dirPath);
-	if (!fsp.isDirectory())
+	if (std::filesystem::is_directory(dirPath))
 	{
-		return;
-	}
-
-	for (auto f : fsp)
-	{
-		if (f->isDirectory())
+		for(auto& f: std::filesystem::recursive_directory_iterator(dirPath))
 		{
-			getDirFiles(f->getPath(), ret, suffixes);
-		}
-		else if (f->isFile()
-				&& hasEnding(f->getPath(), suffixes))
-		{
-			auto p = fsp.separator() == '\\'
-					? retdec::utils::replaceAll(f->getPath(), "\\", "/")
-					: f->getPath();
-			ret.push_back(p);
+			if (f.is_regular_file()
+					&& hasEnding(f.path(), suffixes))
+			{
+				ret.push_back(f.path());
+			}
 		}
 	}
 }

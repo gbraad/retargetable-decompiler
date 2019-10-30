@@ -16,6 +16,7 @@
 #include "retdec/bin2llvmir/providers/names.h"
 #include "retdec/bin2llvmir/utils/debug.h"
 #include "retdec/utils/address.h"
+#include "retdec/utils/string.h"
 
 using namespace retdec::utils;
 
@@ -53,7 +54,7 @@ std::string llvmObjToString(const llvm::Module* t)
 
 void dumpModuleToFile(
 		const llvm::Module* m,
-		utils::FilesystemPath dirName,
+		std::filesystem::path dirName,
 		const std::string& fileName)
 {
 	static unsigned cntr = 0;
@@ -63,7 +64,7 @@ void dumpModuleToFile(
 
 	dirName.append(n);
 
-	std::ofstream myfile(dirName.getPath());
+	std::ofstream myfile(dirName);
 	myfile << llvmObjToString(m) << std::endl;
 }
 
@@ -406,12 +407,12 @@ void dumpControFlowToJsonFunction(
 
 void dumpControFlowToJson(
 		llvm::Module* m,
-		utils::FilesystemPath dirName,
+		std::filesystem::path dirName,
 		const std::string& fileName)
 {
 	dirName.append(fileName);
 
-	std::ofstream json(dirName.getPath());
+	std::ofstream json(dirName);
 	if (!json.is_open())
 	{
 		return;

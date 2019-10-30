@@ -22,63 +22,63 @@ RawDataCompiler::RawDataCompiler(
 {
 	heuristics = new Heuristics(parser, *search, toolInfo);
 	externalSuffixes = EXTERNAL_DATABASE_SUFFIXES;
-
-	retdec::utils::FilesystemPath pathPe(pathToShared);
-	pathPe.append(YARA_RULES_PATH + "pe/");
-	retdec::utils::FilesystemPath pathElf(pathToShared);
-	pathElf.append(YARA_RULES_PATH + "elf/");
-	retdec::utils::FilesystemPath pathMacho(pathToShared);
-	pathMacho.append(YARA_RULES_PATH + "macho/");
 	auto bitWidth = parser.getWordLength();
+
+	std::filesystem::path pathPe;
+	std::filesystem::path pathElf;
+	std::filesystem::path pathMacho;
+
+	std::filesystem::path yaraPath(pathToShared);
+	yaraPath.append(YARA_RULES_PATH);
 
 	switch(targetArchitecture)
 	{
 		case Architecture::X86:
-			pathPe.append("x86");
-			pathElf.append("x86c");
-			pathMacho.append("x86");
+			pathPe = yaraPath / "pe" / "x86";
+			pathElf = yaraPath / "elf" / "x86";
+			pathMacho = yaraPath / "macho" / "x86";
 			break;
 
 		case Architecture::X86_64:
-			pathPe.append("x64");
-			pathElf.append("x64");
-			pathMacho.append("x64");
+			pathPe = yaraPath / "pe" / "x64";
+			pathElf = yaraPath / "elf" / "x64";
+			pathMacho = yaraPath / "macho" / "x64";
 			break;
 
 		case Architecture::ARM:
 			if (bitWidth == 32)
 			{
-				pathPe.append("arm");
-				pathElf.append("arm");
-				pathMacho.append("arm");
+				pathPe = yaraPath / "pe" / "arm";
+				pathElf = yaraPath / "elf" / "arm";
+				pathMacho = yaraPath / "macho" / "arm";
 			}
 			else
 			{
-				pathElf.append("arm64");
+				pathElf = yaraPath / "elf" / "arm64";
 			}
 			break;
 
 		case Architecture::POWERPC:
 			if (bitWidth == 32)
 			{
-				pathElf.append("ppc");
-				pathMacho.append("ppc");
+				pathElf = yaraPath / "elf" / "ppc";
+				pathMacho = yaraPath / "macho" / "ppc";
 			}
 			else
 			{
-				pathElf.append("ppc64");
-				pathMacho.append("ppc64");
+				pathElf = yaraPath / "elf" / "ppc64";
+				pathMacho = yaraPath / "macho" / "ppc64";
 			}
 			break;
 
 		case Architecture::MIPS:
 			if (bitWidth == 32)
 			{
-				pathElf.append("mips");
+				pathElf = yaraPath / "elf" / "mips";
 			}
 			else
 			{
-				pathElf.append("mips64");
+				pathElf = yaraPath / "elf" / "mips64";
 			}
 			break;
 
@@ -89,6 +89,7 @@ RawDataCompiler::RawDataCompiler(
 	populateInternalPaths(pathPe);
 	populateInternalPaths(pathElf);
 	populateInternalPaths(pathMacho);
+
 }
 
 } // namespace cpdetect

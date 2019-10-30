@@ -7,15 +7,15 @@
 #ifndef RETDEC_UTILS_BINARY_PATH_H
 #define RETDEC_UTILS_BINARY_PATH_H
 
-#include <whereami/whereami.h>
+#include <filesystem>
 
-#include "retdec/utils/filesystem_path.h"
+#include <whereami/whereami.h>
 
 namespace retdec {
 namespace utils {
 
-FilesystemPath getThisBinaryPath();
-FilesystemPath getThisBinaryDirectoryPath();
+std::filesystem::path getThisBinaryPath();
+std::filesystem::path getThisBinaryDirectoryPath();
 
 } // namespace utils
 } // namespace retdec

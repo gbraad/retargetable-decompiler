@@ -4,12 +4,12 @@
  * @copyright (c) 2017 Avast Software, licensed under the MIT license
  */
 
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
 
-#include "retdec/utils/filesystem_path.h"
 #include "retdec/stacofin/stacofin.h"
 #include "retdec/loader/image_factory.h"
 
@@ -135,12 +135,12 @@ int doActions(
 		}
 		else if (args[i] == "-b" && i + 1 < args.size()) {
 			binaryPath = args[++i];
-			if (!FilesystemPath(binaryPath).isFile()) {
+			if (!std::filesystem::is_regular_file(binaryPath)) {
 				return printError("invalid binary file '" + binaryPath + "'");
 			}
 		}
 		else {
-			if (!FilesystemPath(args[i]).isFile()) {
+			if (!std::filesystem::is_regular_file(args[i])) {
 				return printError("invalid yara file '" + args[i] + "'");
 			}
 			yaraPaths.push_back(args[i]);
