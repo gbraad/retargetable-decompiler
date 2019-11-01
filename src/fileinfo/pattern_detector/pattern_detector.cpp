@@ -317,15 +317,15 @@ void PatternDetector::addFilePaths(const std::string &category, const std::set<s
 
 	for(const auto &item : paths)
 	{
-		std::filesystem::path actDir(item);
-		if(std::filesystem::is_regular_file(actDir))
+		fs::path actDir(item);
+		if(fs::is_regular_file(actDir))
 		{
 			actCategory->second.insert(item);
 			continue;
 		}
-		else if (std::filesystem::is_directory(actDir))
+		else if (fs::is_directory(actDir))
 		{
-			for(auto& file: std::filesystem::directory_iterator(actDir))
+			for(auto& file: fs::directory_iterator(actDir))
 			{
 				if(file.is_regular_file()
 						&& (file.path().extension() == ".yar"

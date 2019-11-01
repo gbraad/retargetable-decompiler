@@ -4,15 +4,14 @@
  * @copyright (c) 2017 Avast Software, licensed under the MIT license
  */
 
-#include <filesystem>
-
-#include "retdec/utils/conversion.h"
-#include "retdec/utils/binary_path.h"
-#include "retdec/utils/equality.h"
-#include "retdec/utils/string.h"
 #include "retdec/cpdetect/compiler_detector/compiler_detector.h"
 #include "retdec/cpdetect/settings.h"
 #include "retdec/cpdetect/utils/version_solver.h"
+#include "retdec/utils/binary_path.h"
+#include "retdec/utils/conversion.h"
+#include "retdec/utils/equality.h"
+#include "retdec/utils/filesystem.h"
+#include "retdec/utils/string.h"
 #include "yaracpp/yara_detector/yara_detector.h"
 
 using namespace retdec::fileformat;
@@ -195,8 +194,7 @@ bool CompilerDetector::getExternalDatabases()
 {
 	auto result = false;
 
-	for(auto& f: std::filesystem::directory_iterator
-			(std::filesystem::current_path()))
+	for(auto& f: fs::directory_iterator(fs::current_path()))
 	{
 		if (f.is_regular_file() && std::any_of(
 				externalSuffixes.begin(),
@@ -301,27 +299,27 @@ void CompilerDetector::removeUnusedCompilers()
  * If @p file is a regular file YARA file, add it to internal paths member.
  */
 void CompilerDetector::populateInternalPaths(
-		const std::filesystem::path& file,
+		const fs::path& file,
 		bool recursive)
 {
-	if (std::filesystem::is_directory(file))
+	if (fs::is_directory(file))
 	{
 		if (recursive)
 		{
-			for (auto& f : std::filesystem::recursive_directory_iterator(file))
+			for (auto& f : fs::recursive_directory_iterator(file))
 			{
 				populateInternalPaths(f, recursive);
 			}
 		}
 		else
 		{
-			for (auto& f : std::filesystem::directory_iterator(file))
+			for (auto& f : fs::directory_iterator(file))
 			{
 				populateInternalPaths(f, recursive);
 			}
 		}
 	}
-	else if (std::filesystem::is_regular_file(file))
+	else if (fs::is_regular_file(file))
 	{
 		if (std::any_of(
 					externalSuffixes.begin(),

@@ -5,7 +5,6 @@
 */
 
 #include <iostream>
-#include <filesystem>
 #include <fstream>
 
 #include "retdec/llvmir2hll/ir/add_op_expr.h"
@@ -81,6 +80,7 @@
 #include "retdec/llvmir2hll/ir/void_type.h"
 #include "retdec/llvmir2hll/ir/while_loop_stmt.h"
 #include "retdec/llvmir2hll/hll/bir_writer.h"
+#include "retdec/utils/filesystem.h"
 
 namespace retdec {
 namespace llvmir2hll {
@@ -101,7 +101,7 @@ void BIRWriter::emit(ShPtr<Module> m, const std::string& fileName) {
 	emitGlobals();
 	emitFunctions();
 
-	auto dirName = std::filesystem::current_path();
+	auto dirName = fs::current_path();
 	static unsigned cntr = 0;
 	std::string n = fileName.empty()
 			? "dump_" + std::to_string(cntr++) + ".bir"

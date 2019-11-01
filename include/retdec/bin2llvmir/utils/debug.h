@@ -9,12 +9,13 @@
 
 #include <iomanip>
 #include <iostream>
-#include <filesystem>
 #include <sstream>
 #include <string>
 
 #include <llvm/IR/Module.h>
 #include <llvm/Support/raw_ostream.h>
+
+#include "retdec/utils/filesystem.h"
 
 namespace retdec {
 namespace bin2llvmir {
@@ -47,11 +48,11 @@ std::string llvmObjToString(const llvm::Module* t);
 
 void dumpModuleToFile(
 		const llvm::Module* m,
-		std::filesystem::path dirName,
+		fs::path dirName,
 		const std::string& fileName = "");
 void dumpControFlowToJson(
 		llvm::Module* m,
-		std::filesystem::path dirName,
+		fs::path dirName,
 		const std::string& fileName = "control-flow.json");
 
 } // namespace bin2llvmir

@@ -23,7 +23,7 @@ PeCompiler::PeCompiler(
 	heuristics = new PeHeuristics(parser, *search, toolInfo);
 	externalSuffixes = EXTERNAL_DATABASE_SUFFIXES;
 
-	std::filesystem::path path(pathToShared);
+	fs::path path(pathToShared);
 	path.append(YARA_RULES_PATH + "pe/");
 	auto bitWidth = parser.getWordLength();
 

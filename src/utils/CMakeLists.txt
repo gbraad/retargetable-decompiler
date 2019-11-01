@@ -18,9 +18,14 @@ target_link_libraries(retdec-utils whereami)
 if(WIN32)
 	target_link_libraries(retdec-utils shlwapi) # shlwapi.dll for PathRemoveFileSpec()
 endif()
-target_link_libraries(retdec-utils)
 target_include_directories(retdec-utils PUBLIC ${PROJECT_SOURCE_DIR}/include/)
 target_include_directories(retdec-utils PUBLIC ${PROJECT_SOURCE_DIR}/deps/)
+
+include(CheckIncludeFileCXX)
+CHECK_INCLUDE_FILE_CXX(filesystem HAS_FILESYSTEM)
+if(NOT HAS_FILESYSTEM)
+	target_link_libraries(retdec-utils stdc++fs)
+endif()
 
 # Disable the min() and max() macros to prevent errors when using e.g.
 # std::numeric_limits<...>::max()

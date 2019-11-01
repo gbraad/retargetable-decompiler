@@ -4,12 +4,12 @@
  * @copyright (c) 2017 Avast Software, licensed under the MIT license
  */
 
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <ostream>
 
 #include "pat2yara/processing.h"
+#include "retdec/utils/filesystem.h"
 #include "yaramod/builder/yara_file_builder.h"
 #include "yaramod/builder/yara_rule_builder.h"
 #include "yaramod/yaramod.h"
@@ -158,7 +158,7 @@ int processArguments(std::vector<std::string> &args)
 			}
 		}
 		else {
-			if (std::filesystem::is_regular_file(args[i])) {
+			if (fs::is_regular_file(args[i])) {
 				options.input.push_back(args[i]);
 			}
 			else {

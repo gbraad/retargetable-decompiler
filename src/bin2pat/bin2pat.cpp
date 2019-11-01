@@ -6,12 +6,12 @@
 
 #include <cstdlib>
 #include <fstream>
-#include <filesystem>
 #include <iostream>
 #include <ostream>
 #include <vector>
 
 #include "retdec/patterngen/pattern_extractor/pattern_extractor.h"
+#include "retdec/utils/filesystem.h"
 #include "yaramod/yaramod.h"
 
 /**
@@ -101,7 +101,7 @@ void processArgs(
 			// Read LIST_FILE until EOF
 			while (std::getline(inputObjects, object)) {
 				// Ensure file exists before proceeding
-				if(!std::filesystem::is_regular_file(object)) {
+				if(!fs::is_regular_file(object)) {
 					printErrorAndDie("argument '" + args[i]
 						+ "' contains the filename '" + object
 						+ "' which is not a valid file");
@@ -114,7 +114,7 @@ void processArgs(
 		}
 		else {
 			// Input file. Check file on system level.
-			if(!std::filesystem::is_regular_file(args[i])) {
+			if(!fs::is_regular_file(args[i])) {
 				printErrorAndDie("argument '" + args[i]
 					+ "' is neither valid file nor argument");
 				return;

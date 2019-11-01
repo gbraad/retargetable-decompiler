@@ -23,7 +23,7 @@ MachOCompiler::MachOCompiler(
 	heuristics = new MachOHeuristics(parser, *search, toolInfo);
 	externalSuffixes = EXTERNAL_DATABASE_SUFFIXES;
 
-	std::filesystem::path path(pathToShared);
+	fs::path path(pathToShared);
 	path.append(YARA_RULES_PATH + "macho/");
 	auto bitWidth = parser.getWordLength();
 

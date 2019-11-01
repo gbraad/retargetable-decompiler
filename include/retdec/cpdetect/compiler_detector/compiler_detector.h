@@ -7,11 +7,10 @@
 #ifndef RETDEC_CPDETECT_COMPILER_DETECTOR_COMPILER_DETECTOR_H
 #define RETDEC_CPDETECT_COMPILER_DETECTOR_COMPILER_DETECTOR_H
 
-#include <filesystem>
-
-#include "retdec/utils/non_copyable.h"
 #include "retdec/cpdetect/compiler_detector/heuristics/heuristics.h"
 #include "retdec/cpdetect/compiler_detector/search/search.h"
+#include "retdec/utils/filesystem.h"
+#include "retdec/utils/non_copyable.h"
 
 namespace retdec {
 namespace cpdetect {
@@ -46,7 +45,7 @@ class CompilerDetector : private retdec::utils::NonCopyable
 
 	protected:
 		void populateInternalPaths(
-				const std::filesystem::path& file,
+				const fs::path& file,
 				bool recursive = false);
 
 	protected:
@@ -55,7 +54,7 @@ class CompilerDetector : private retdec::utils::NonCopyable
 		Search *search;                                      ///< class for signature search
 		Heuristics *heuristics;                              ///< class for heuristics detections
 		std::vector<std::string> internalPaths;              ///< internal rule database files
-		std::filesystem::path pathToShared;                  ///< path to shared folder
+		fs::path pathToShared;                  ///< path to shared folder
 		std::set<std::string> externalSuffixes;              ///< external database file suffixes
 
 	public:

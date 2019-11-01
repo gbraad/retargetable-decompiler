@@ -24,11 +24,11 @@ RawDataCompiler::RawDataCompiler(
 	externalSuffixes = EXTERNAL_DATABASE_SUFFIXES;
 	auto bitWidth = parser.getWordLength();
 
-	std::filesystem::path pathPe;
-	std::filesystem::path pathElf;
-	std::filesystem::path pathMacho;
+	fs::path pathPe;
+	fs::path pathElf;
+	fs::path pathMacho;
 
-	std::filesystem::path yaraPath(pathToShared);
+	fs::path yaraPath(pathToShared);
 	yaraPath.append(YARA_RULES_PATH);
 
 	switch(targetArchitecture)

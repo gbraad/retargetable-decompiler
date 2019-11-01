@@ -23,7 +23,7 @@ ElfCompiler::ElfCompiler(
 	heuristics = new ElfHeuristics(parser, *search, toolInfo);
 	externalSuffixes = EXTERNAL_DATABASE_SUFFIXES;
 
-	std::filesystem::path path(pathToShared);
+	fs::path path(pathToShared);
 	path.append(YARA_RULES_PATH + "elf/");
 	auto bitWidth = parser.getWordLength();
 

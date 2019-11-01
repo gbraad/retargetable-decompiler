@@ -5,7 +5,6 @@
  */
 
 #include <iostream>
-#include <filesystem>
 #include <limits>
 #include <vector>
 
@@ -14,6 +13,7 @@
 
 #include "retdec/ar-extractor/archive_wrapper.h"
 #include "retdec/ar-extractor/detection.h"
+#include "retdec/utils/filesystem.h"
 
 using namespace retdec::utils;
 using namespace retdec::ar_extractor;
@@ -275,7 +275,7 @@ int processArguments(
 			}
 		}
 		else {
-			if (std::filesystem::is_regular_file(arg)) {
+			if (fs::is_regular_file(arg)) {
 				if (inputArchive.empty()) {
 					inputArchive = arg;
 				}

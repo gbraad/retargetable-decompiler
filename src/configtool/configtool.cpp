@@ -6,13 +6,13 @@
 
 #include <cstring>
 #include <fstream>
-#include <filesystem>
 #include <iostream>
 #include <set>
 #include <string>
 
 #include "retdec/config/config.h"
 #include "retdec/utils/conversion.h"
+#include "retdec/utils/filesystem.h"
 #include "retdec/utils/string.h"
 
 enum errcode_t
@@ -81,9 +81,9 @@ void getDirFiles(
 		std::vector<std::string> &ret,
 		const std::set<std::string> &suffixes)
 {
-	if (std::filesystem::is_directory(dirPath))
+	if (fs::is_directory(dirPath))
 	{
-		for(auto& f: std::filesystem::recursive_directory_iterator(dirPath))
+		for(auto& f: fs::recursive_directory_iterator(dirPath))
 		{
 			if (f.is_regular_file()
 					&& hasEnding(f.path(), suffixes))

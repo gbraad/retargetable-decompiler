@@ -7,15 +7,15 @@
 #include <algorithm>
 #include <cctype>
 #include <cstring>
-#include <filesystem>
 #include <fstream>
 #include <ostream>
 
 #include <rapidjson/document.h>
 #include <rapidjson/prettywriter.h>
 
-#include "retdec/utils/string.h"
 #include "retdec/ar-extractor/archive_wrapper.h"
+#include "retdec/utils/filesystem.h"
+#include "retdec/utils/string.h"
 
 using namespace retdec::utils;
 using namespace llvm;
@@ -252,7 +252,7 @@ bool ArchiveWrapper::extract(
 	const std::string &directory) const
 {
 	// Check if target directory exists if string not empty.
-	if (!directory.empty() && !std::filesystem::is_directory(directory)) {
+	if (!directory.empty() && !fs::is_directory(directory)) {
 		errorMessage = "Invalid target directory";
 		return false;
 	}

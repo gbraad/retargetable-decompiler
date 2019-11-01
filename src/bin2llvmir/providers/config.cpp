@@ -439,9 +439,9 @@ llvm::GlobalVariable* Config::getGlobalDummy()
 	return _globalDummy;
 }
 
-std::filesystem::path Config::getOutputDirectory()
+fs::path Config::getOutputDirectory()
 {
-	std::filesystem::path fsp(getConfig().parameters.getOutputFile());
+	fs::path fsp(getConfig().parameters.getOutputFile());
 	return fsp.parent_path();
 }
 
